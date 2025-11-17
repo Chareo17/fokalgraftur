@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2024-06-01T00:00:00.000Z" agent="Mozilla/5.0" etag="etag" version="20.1.5" type="device">
+  <diagram id="erd_full" name="ERD Lengkap">
+    <mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- User Entity -->
+        <mxCell id="2" value="Pengguna" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="160" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="3" value="id : PK" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;" vertex="1" parent="2">
+          <mxGeometry x="10" y="30" width="140" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="4" value="nama : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="2">
+          <mxGeometry x="10" y="50" width="140" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="5" value="nama_pengguna : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="2">
+          <mxGeometry x="10" y="70" width="140" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="6" value="kata_sandi : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="2">
+          <mxGeometry x="10" y="90" width="140" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7" value="peran : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="2">
+          <mxGeometry x="10" y="110" width="140" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- Alumni Entity -->
+        <mxCell id="8" value="Alumni" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="260" y="40" width="180" height="280" as="geometry"/>
+        </mxCell>
+        <mxCell id="9" value="id : PK" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="30" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="10" value="pengguna_id : FK" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="50" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="11" value="nama : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="70" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="12" value="alamat : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="90" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="13" value="nama_pengguna : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="110" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="14" value="jurusan : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="130" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="15" value="tahun_lulus : int" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="150" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="16" value="nia : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="170" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="17" value="no_hp : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="190" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="18" value="status : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="210" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="19" value="nama_perusahaan : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="230" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="20" value="nama_universitas : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="250" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="21" value="kartu_digital_tersedia : boolean" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="8">
+          <mxGeometry x="10" y="270" width="160" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- Siswa Entity -->
+        <mxCell id="22" value="Siswa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="480" y="40" width="180" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="23" value="id : PK" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;" vertex="1" parent="22">
+          <mxGeometry x="10" y="30" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="24" value="pengguna_id : FK" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="22">
+          <mxGeometry x="10" y="50" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="25" value="nama : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="22">
+          <mxGeometry x="10" y="70" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="26" value="nama_pengguna : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="22">
+          <mxGeometry x="10" y="90" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="27" value="jurusan : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="22">
+          <mxGeometry x="10" y="110" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="28" value="nis : string" style="text;html=1;strokeColor=none;fillColor=none;align=left;whiteSpace=wrap;" vertex="1" parent="22">

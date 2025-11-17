@@ -1,0 +1,123 @@
+@startuml ERD
+
+entity "User" as User {
+  *id : bigint <<PK>>
+  --
+  name : string
+  username : string
+  password : string
+  role : string
+}
+
+entity "Alumni" as Alumni {
+  *id : bigint <<PK>>
+  --
+  user_id : bigint <<FK>>
+  name : string
+  alamat : string
+  username : string
+  jurusan : string
+  tahun_lulusan : int
+  nia : string
+  no_hp : string
+  status : string
+  nama_perusahaan : string
+  nama_universitas : string
+  digital_card_available : boolean
+  password : string
+}
+
+entity "Siswa" as Siswa {
+  *id : bigint <<PK>>
+  --
+  user_id : bigint <<FK>>
+  name : string
+  username : string
+  jurusan : string
+  nis : string
+  profile_image : string
+  password : string
+}
+
+entity "Berita" as Berita {
+  *id : bigint <<PK>>
+  --
+  user_id : bigint <<FK>>
+  judul : string
+  ringkasan : string
+  gambar : string
+  name : string
+}
+
+entity "Donasi" as Donasi {
+  *id : bigint <<PK>>
+  --
+  user_id : bigint
+  user_type : string
+  nama : string
+  gambar_donasi : string
+  nominal : decimal
+  status : string
+}
+
+entity "Mentoring" as Mentoring {
+  *id : bigint <<PK>>
+  --
+  name : string
+  judul_mentoring : string
+  deskripsi : string
+  path_gambar : string
+}
+
+entity "ForumTopic" as ForumTopic {
+  *id : bigint <<PK>>
+  --
+  judul_topik : string
+  isi_topik : string
+  kategori : string
+  creator_id : bigint
+  creator_role : string
+}
+
+entity "ForumReply" as ForumReply {
+  *id : bigint <<PK>>
+  --
+  forum_topic_id : bigint <<FK>>
+  creator_id : bigint
+  creator_role : string
+  reply_content : string
+}
+
+entity "Lowongan" as Lowongan {
+  *id : bigint <<PK>>
+  --
+  judul : string
+  name : string
+  lokasi : string
+  pendidikan : string
+  usia : int
+  jenis_kelamin : string
+  pengalaman : string
+  deskripsi : string
+  gambar : string
+  link_form : string
+  no_whatsapp : string
+  jam_kerja : string
+}
+
+' Relationships
+User ||--o{ Alumni : has
+User ||--o{ Siswa : has
+User ||--o{ Berita : has
+Donasi }o--|| User : polymorphic
+Donasi }o--|| Alumni : polymorphic
+Donasi }o--|| Siswa : polymorphic
+ForumTopic ||--o{ ForumReply : has
+ForumTopic }o--|| Alumni : creator
+ForumTopic }o--|| Siswa : creator
+ForumTopic }o--|| Admin : creator
+ForumReply }o--|| Alumni : creator
+ForumReply }o--|| Siswa : creator
+ForumReply }o--|| Admin : creator
+
+@enduml

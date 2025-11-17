@@ -1,0 +1,13 @@
+@startuml
+start
+:User logs in / is authenticated;
+:Navbar view is rendered;
+:System determines user role and user ID;
+:NotificationService fetches latest berita uploads;
+:NotificationService fetches latest validated donations for the user;
+:NotificationService combines berita and donation notifications;
+:NotificationService sorts notifications by latest update time;
+:Notifications are passed to the navbar view;
+:Notifications are displayed to the user in the navbar;
+stop
+@enduml

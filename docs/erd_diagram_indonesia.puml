@@ -1,0 +1,123 @@
+@startuml ERD
+
+entity "Pengguna" as User {
+  *id : bigint <<PK>>
+  --
+  nama : string
+  nama_pengguna : string
+  kata_sandi : string
+  peran : string
+}
+
+entity "Alumni" as Alumni {
+  *id : bigint <<PK>>
+  --
+  pengguna_id : bigint <<FK>>
+  nama : string
+  alamat : string
+  nama_pengguna : string
+  jurusan : string
+  tahun_lulus : int
+  nia : string
+  no_hp : string
+  status : string
+  nama_perusahaan : string
+  nama_universitas : string
+  kartu_digital_tersedia : boolean
+  kata_sandi : string
+}
+
+entity "Siswa" as Siswa {
+  *id : bigint <<PK>>
+  --
+  pengguna_id : bigint <<FK>>
+  nama : string
+  nama_pengguna : string
+  jurusan : string
+  nis : string
+  gambar_profil : string
+  kata_sandi : string
+}
+
+entity "Berita" as Berita {
+  *id : bigint <<PK>>
+  --
+  pengguna_id : bigint <<FK>>
+  judul : string
+  ringkasan : string
+  gambar : string
+  nama : string
+}
+
+entity "Donasi" as Donasi {
+  *id : bigint <<PK>>
+  --
+  pengguna_id : bigint
+  tipe_pengguna : string
+  nama : string
+  gambar_donasi : string
+  nominal : decimal
+  status : string
+}
+
+entity "Mentoring" as Mentoring {
+  *id : bigint <<PK>>
+  --
+  nama : string
+  judul_mentoring : string
+  deskripsi : string
+  path_gambar : string
+}
+
+entity "TopikForum" as ForumTopic {
+  *id : bigint <<PK>>
+  --
+  judul_topik : string
+  isi_topik : string
+  kategori : string
+  pembuat_id : bigint
+  peran_pembuat : string
+}
+
+entity "BalasanForum" as ForumReply {
+  *id : bigint <<PK>>
+  --
+  topik_forum_id : bigint <<FK>>
+  pembuat_id : bigint
+  peran_pembuat : string
+  isi_balasan : string
+}
+
+entity "Lowongan" as Lowongan {
+  *id : bigint <<PK>>
+  --
+  judul : string
+  nama : string
+  lokasi : string
+  pendidikan : string
+  usia : int
+  jenis_kelamin : string
+  pengalaman : string
+  deskripsi : string
+  gambar : string
+  link_form : string
+  no_whatsapp : string
+  jam_kerja : string
+}
+
+' Relationships
+User ||--o{ Alumni : memiliki
+User ||--o{ Siswa : memiliki
+User ||--o{ Berita : memiliki
+Donasi }o--|| User : polimorfik
+Donasi }o--|| Alumni : polimorfik
+Donasi }o--|| Siswa : polimorfik
+ForumTopic ||--o{ ForumReply : memiliki
+ForumTopic }o--|| Alumni : pembuat
+ForumTopic }o--|| Siswa : pembuat
+ForumTopic }o--|| Admin : pembuat
+ForumReply }o--|| Alumni : pembuat
+ForumReply }o--|| Siswa : pembuat
+ForumReply }o--|| Admin : pembuat
+
+@enduml
