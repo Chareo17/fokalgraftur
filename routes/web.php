@@ -116,8 +116,8 @@ Route::delete('/testimoni/{id}', [TestimoniController::class, 'destroy'])->name(
 
 //donasi ADMIN
 Route::get('/admin/donasi', [DonasiController::class, 'index'])->name('admin.donasi');
-Route::get('/donasi', [DonasiController::class, 'create'])->name('donasi.form');
-Route::post('/donasi', [DonasiController::class, 'store'])->name('donasi.store');
+Route::get('/donasi', [DonasiController::class, 'create'])->name('donasi.form')->middleware('auth:admin,alumni,siswa');
+Route::post('/donasi', [DonasiController::class, 'store'])->name('donasi.store')->middleware('auth:admin,alumni,siswa');
 Route::post('/admin/donasi/validate/{id}', [DonasiController::class, 'validateDonation'])->name('donasi.validate');
 Route::post('/admin/donasi/reject/{id}', [DonasiController::class, 'rejectDonation'])->name('donasi.reject');
 Route::post('/admin/donasi/penarikan', [DonasiController::class, 'storeWithdrawal'])->name('donasi.withdrawal')->middleware('auth:admin');

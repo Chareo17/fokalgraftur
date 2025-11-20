@@ -83,7 +83,7 @@ class VoucherController extends Controller
         // Add is_used_by_current_user flag
         if ($currentUser) {
             foreach ($vouchers as $voucher) {
-                $voucher->is_used_by_current_user = $voucher->isUsedByUser($currentUser->id, $currentUser->user_type ?? null);
+                $voucher->is_used_by_current_user = $voucher->isUsedByUser($currentUser->id);
             }
         }
 
@@ -265,7 +265,7 @@ class VoucherController extends Controller
         $user = $this->getCurrentUser();
         if ($user) {
             foreach ($vouchers as $voucher) {
-                $voucher->is_used_by_current_user = $voucher->isUsedByUser($user->id, $user->user_type ?? null);
+                $voucher->is_used_by_current_user = $voucher->isUsedByUser($user->id);
             }
         }
 
@@ -305,18 +305,10 @@ class VoucherController extends Controller
             }
 
             // Check if user already used this voucher
-            if ($voucher->isUsedByUser($user->id, $user->user_type)) {
+            if ($voucher->isUsedByUser($user->id)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Anda sudah menggunakan voucher ini'
-                ], 400);
-            }
-
-            // Check usage limit
-            if ($voucher->batas_penggunaan && $voucher->usages()->count() >= $voucher->batas_penggunaan) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Batas penggunaan voucher telah tercapai'
                 ], 400);
             }
 
@@ -332,18 +324,53 @@ class VoucherController extends Controller
             // Increment usage count
             $voucher->increment('jumlah_digunakan');
 
-            // Return voucher image for download
+            // If image exists, trigger file download directly; otherwise return success JSON fallback
             if ($voucher->gambar && Storage::disk('public')->exists($voucher->gambar)) {
-                $filePath = public_path('storage/' . $voucher->gambar);
-                return response()->download($filePath, 'voucher-' . $voucher->id . '.jpg');
-            } else {
-                // Return default image or generate one
-                // For now, return error
-                return response()->json([
-                    'success' => false,
-                    'message' => 'File voucher tidak tersedia'
-                ], 404);
+                $absPath = null;
+                try {
+                    $absPath = Storage::disk('public')->path($voucher->gambar);
+                } catch (\Throwable $e) {
+                    $absPath = null;
+                }
+
+                if ($absPath && file_exists($absPath)) {
+                    $size = @filesize($absPath) ?: 0;
+                    if ($size <= 0) {
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Voucher berhasil digunakan, namun file voucher rusak atau kosong',
+                            'voucher' => $voucher->only(['id', 'judul', 'diskon', 'tipe_diskon'])
+                        ]);
+                    }
+
+                    $ext = pathinfo($absPath, PATHINFO_EXTENSION) ?: 'bin';
+                    $filename = 'voucher-' . $voucher->id . '.' . $ext;
+
+                    // Determine MIME using finfo for better accuracy
+                    $mime = 'application/octet-stream';
+                    if (function_exists('finfo_open')) {
+                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                        if ($finfo) {
+                            $detected = @finfo_file($finfo, $absPath);
+                            if ($detected) {
+                                $mime = $detected;
+                            }
+                            finfo_close($finfo);
+                        }
+                    }
+
+                    return response()->download($absPath, $filename, [
+                        'Content-Type' => $mime,
+                        'Content-Length' => (string) $size,
+                    ]);
+                }
             }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Voucher berhasil digunakan, namun file voucher tidak tersedia untuk diunduh',
+                'voucher' => $voucher->only(['id', 'judul', 'diskon', 'tipe_diskon'])
+            ]);
 
         } catch (\Exception $e) {
             Log::error('Failed to use voucher: ' . $e->getMessage());

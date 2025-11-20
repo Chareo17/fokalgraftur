@@ -108,21 +108,15 @@ class Voucher extends Model
      * Check if a specific user has already used this voucher
      * Supports different user types (admin, alumni, siswa)
      */
-    public function isUsedByUser(?int $userId, ?string $userType = null): bool
+    public function isUsedByUser(?int $userId): bool
     {
         if (!$userId) {
             return false;
         }
 
-        $query = \App\Models\VoucherUsage::where('voucher_id', $this->id)
-                           ->where('user_id', $userId);
-
-        // If user type is specified, also check user_type
-        if ($userType) {
-            $query->where('user_type', $userType);
-        }
-
-        return $query->exists();
+        return \App\Models\VoucherUsage::where('voucher_id', $this->id)
+            ->where('user_id', $userId)
+            ->exists();
     }
 
     /**

@@ -10,7 +10,7 @@
           <div class="hero-content" data-aos="fade-up" data-aos-delay="200">
             <div class="company-badge mb-4">
               <i class="bi bi-gear-fill me-2"></i>
-              Working for your success
+              Selamat Datang
             </div>
 
             <h1 class="mb-4">

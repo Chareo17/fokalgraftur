@@ -1,39 +1,20 @@
-# TODO: Perbaikan Sistem Voucher
+# TODO: Fix Voucher Usage Issue for Alumni and Siswa
 
-## Masalah Saat Ini
+## Problem
+Only the first created account (e.g., first alumni or siswa) can use vouchers. Subsequent accounts cannot use the same voucher, even though they should be able to use it once each.
 
--   Admin tidak bisa membuat voucher (padahal seharusnya bisa)
--   Alumni dan siswa tidak bisa menggunakan voucher (padahal seharusnya bisa)
--   Admin bisa menggunakan voucher (sudah benar)
+## Root Cause
+The voucher system has a total usage limit that prevents multiple users from using the same voucher. Once one user uses it, the voucher becomes inactive for all others.
 
-## Plan Perbaikan
+## Solution
+Remove the total usage limit from voucher logic, allowing unlimited total uses but one use per user.
 
-### 1. Perbaiki Logic Admin Check di VoucherController
+## Steps
+- [ ] Modify Voucher.php to remove total usage checks from isActive() and isExpired()
+- [ ] Update scopeActive() and scopeExpired() to remove total usage conditions
+- [ ] Modify VoucherController.php useVoucher() method to remove total usage limit check
+- [ ] Test the changes to ensure each user can use the voucher once
 
--   [x] Update method `isCurrentUserAdmin()` untuk mendukung multiple guard admin
--   [x] Pastikan admin bisa membuat voucher dengan guard 'admin'
-
-### 2. Perbaiki Logic Penggunaan Voucher
-
--   [x] Pastikan alumni dan siswa bisa menggunakan voucher
--   [x] Update method `isUsedByUser()` jika perlu
--   [ ] Test semua user types bisa menggunakan voucher
-
-### 3. Update View Voucher
-
--   [x] Pastikan tombol "Gunakan" muncul untuk semua user yang login
--   [x] Update logic pengecekan admin di view
-
-### 4. Testing
-
--   [ ] Test admin membuat voucher
--   [ ] Test admin menggunakan voucher
--   [ ] Test alumni menggunakan voucher
--   [ ] Test siswa menggunakan voucher
--   [ ] Test user yang belum login tidak bisa menggunakan voucher
-
-## Files yang Perlu Diubah
-
--   app/Http/Controllers/VoucherController.php
--   resources/views/voucher.blade.php
--   app/Models/Voucher.php (jika perlu)
+## Files to Edit
+- app/Models/Voucher.php
+- app/Http/Controllers/VoucherController.php
