@@ -954,29 +954,30 @@
 </div>
 
 <script>
-    // Search functionality
-    function searchMentoring() {
-        const searchInput = document.getElementById('searchInput');
-        const searchTerm = searchInput.value.toLowerCase();
-        const mentoringItems = document.querySelectorAll('.mentoring-item');
-        
-        mentoringItems.forEach(item => {
-            const title = item.getAttribute('data-title');
-            const description = item.getAttribute('data-description');
-            
-            if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                item.style.display = 'block';
+    // [update] Robust search: make global, keep layout with d-none, accurate visible count
+    window.searchMentoring = function() {
+        const inputEl = document.getElementById('searchInput');
+        if (!inputEl) return; // [update] guard when element missing
+        const searchTerm = (inputEl.value || '').toLowerCase().trim();
+        const items = document.querySelectorAll('.mentoring-item');
+
+        let visibleCount = 0;
+        items.forEach(item => {
+            const title = (item.getAttribute('data-title') || '').toLowerCase();
+            const description = (item.getAttribute('data-description') || '').toLowerCase();
+            const match = !searchTerm || title.includes(searchTerm) || description.includes(searchTerm);
+
+            // [update] use Bootstrap d-none to hide, avoid overriding d-flex layout
+            item.classList.toggle('d-none', !match);
+            if (match) {
+                visibleCount++;
                 item.style.animation = 'fadeInUp 0.5s ease';
-            } else {
-                item.style.display = 'none';
             }
         });
-        
-        // Show "no results" message if needed
-        const visibleItems = document.querySelectorAll('.mentoring-item[style*="block"]').length;
+
+        // [update] show/hide "no results" message
         let noResultsMsg = document.getElementById('noResultsMessage');
-        
-        if (visibleItems === 0 && searchTerm !== '') {
+        if (visibleCount === 0 && searchTerm !== '') {
             if (!noResultsMsg) {
                 noResultsMsg = document.createElement('div');
                 noResultsMsg.id = 'noResultsMessage';
@@ -988,29 +989,34 @@
                     <h4 class="text-muted mb-3">Tidak ditemukan hasil untuk "${searchTerm}"</h4>
                     <p class="text-muted">Coba gunakan kata kunci yang berbeda</p>
                 `;
-                document.getElementById('mentoringGrid').appendChild(noResultsMsg);
+                const grid = document.getElementById('mentoringGrid');
+                if (grid) grid.appendChild(noResultsMsg);
             }
         } else if (noResultsMsg) {
             noResultsMsg.remove();
         }
-    }
+    };
 
-    // Real-time search
-    document.getElementById('searchInput').addEventListener('input', function() {
-        clearTimeout(this.searchTimeout);
-        this.searchTimeout = setTimeout(() => {
-            searchMentoring();
-        }, 300);
-    });
+    // [update] Real-time search with debounce and guards
+    (function() {
+        const input = document.getElementById('searchInput');
+        if (!input) return;
+        input.addEventListener('input', function() {
+            clearTimeout(this.searchTimeout);
+            this.searchTimeout = setTimeout(() => {
+                window.searchMentoring();
+            }, 300);
+        });
 
-    // Enter key search
-    document.getElementById('searchInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            searchMentoring();
-        }
-    });
+        // Enter key search
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                window.searchMentoring();
+            }
+        });
+    })();
 
-    // Animation on load
+    // Animation on load (unchanged)
     document.addEventListener('DOMContentLoaded', function() {
         const cards = document.querySelectorAll('.mentor-card');
         cards.forEach((card, index) => {
@@ -1024,25 +1030,23 @@
         });
     });
 
-    // Form validation and enhancement
-    document.getElementById('tambahMentoringModal').addEventListener('shown.bs.modal', function() {
-        document.getElementById('judul_mentoring').focus();
+    // Form validation and enhancement (unchanged)
+    document.getElementById('tambahMentoringModal')?.addEventListener('shown.bs.modal', function() {
+        document.getElementById('judul_mentoring')?.focus();
     });
 
-    // File upload preview
-    document.getElementById('path_gambar').addEventListener('change', function(e) {
-        const file = e.target.files[0];
+    // File upload preview (unchanged; fix size calc)
+    document.getElementById('path_gambar')?.addEventListener('change', function(e) {
+        const file = e.target.files?.[0];
         if (file) {
-            if (file.size > 5 * 2524 * 2524) { // 5MB
+            if (file.size > 5 * 1024 * 1024) { // [update] 5MB correct bytes
                 alert('Ukuran file terlalu besar! Maksimal 5MB.');
                 this.value = '';
                 return;
             }
             
-            // Show preview (optional)
             const reader = new FileReader();
             reader.onload = function(e) {
-                // You can add preview functionality here
                 console.log('File loaded successfully');
             };
             reader.readAsDataURL(file);
